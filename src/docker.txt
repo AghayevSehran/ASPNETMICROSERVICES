@@ -1,0 +1,31 @@
+docker images
+
+docker ps
+
+docker pull mongo
+
+docker-compose -f .\docker-compose.yml -f .\docker-compose.ovveride.yml up -d
+
+docker-compose down
+
+
+
+docker ls
+
+docker exec it shopping-mongo /bin/bash
+
+docker ps -aq
+
+
+docker stop $(docker ps -aq)
+
+docker rm $(docker ps -aq)
+
+docker rmi $(docker images -q)
+
+docker system prune
+
+docker run -d -p 3000:3000 mongoclient/mongoclient
+
+
+
