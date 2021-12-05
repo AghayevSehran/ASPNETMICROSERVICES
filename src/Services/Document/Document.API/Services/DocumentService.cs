@@ -1,8 +1,8 @@
-﻿using DocumentMetadata.API.Models;
+﻿using Document.API.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
-namespace DocumentMetadata.API.Services
+namespace Document.API.Services
 {
     public class DocumentService
     {

@@ -1,5 +1,5 @@
-using DocumentMetadata.API.Models;
-using DocumentMetadata.API.Services;
+using Document.API.Services;
+using Document.API.Models;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +11,8 @@ builder.Services.Configure<DocumentDatabaseSettings>(
 builder.Services.AddSingleton<IDocumentDatabaseSettings>(provider =>
     provider.GetRequiredService<IOptions<DocumentDatabaseSettings>>().Value);
 builder.Services.AddScoped<DocumentService>();
+builder.Services.AddScoped<DocumentBsonService>();
+builder.Services.AddScoped<DocumentExpandoService>();
 
 builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;

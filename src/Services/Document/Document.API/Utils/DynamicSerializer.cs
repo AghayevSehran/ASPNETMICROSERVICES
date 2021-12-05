@@ -1,4 +1,4 @@
-﻿using DocumentMetadata.API.Models;
+﻿using Document.API.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
@@ -9,7 +9,7 @@ using MongoDB.Driver.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace DocumentMetadata.API.Utils
+namespace Document.API.Utils
 {
     public class DynamicSerializer<T> : IBsonSerializer
     {

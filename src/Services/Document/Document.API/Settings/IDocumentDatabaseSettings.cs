@@ -1,4 +1,4 @@
-﻿namespace DocumentMetadata.API.Models
+﻿namespace Document.API.Models
 {
     public interface IDocumentDatabaseSettings
     {     

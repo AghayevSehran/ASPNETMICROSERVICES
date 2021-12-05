@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DocumentMetadata.API.Models
+namespace Document.API.Models
 {
     [BsonIgnoreExtraElements]
     public class DocumentData
