@@ -1,13 +1,6 @@
 ﻿using Document.API.Models;
-using Document.API.Requests;
 using Document.API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Dynamic;
 
 namespace Document.API.Controllers
 {
@@ -20,12 +13,22 @@ namespace Document.API.Controllers
         {
             _documentService = documentService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(DocumentDataExpando data)
         {
             await _documentService.CreateAsync(data);
             return Ok();
         }
+
+
+        [HttpGet("Filter")]
+        public async Task<ActionResult<IEnumerable<DocumentDataExpando>>> GetAllFilter(DocumentData documentData)
+        {
+            var documents = await _documentService.GetAllAsyncFiltered();
+            return Ok(documents);
+        }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DocumentDataExpando>>> GetAll()
@@ -44,7 +47,6 @@ namespace Document.API.Controllers
             }
             return Ok(document);
         }
-
 
         [HttpPut]
         public async Task<IActionResult> Update(int docId, DocumentDataExpando updatedData)

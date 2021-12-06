@@ -22,6 +22,12 @@ namespace Document.API.Services
         {
             return await _documets.Find(s => s.DocId == 4000).ToListAsync();
         }
+
+        internal async Task<List<DocumentDataExpando>> GetAllAsyncFiltered()
+        {
+            return await _documets.Find(s => s.DocId == 4000).ToListAsync();
+        }
+
         public async Task<DocumentDataExpando> GetByIdAsync(string id)
         {
             return await _documets.Find(s => s.Id == id).FirstOrDefaultAsync();

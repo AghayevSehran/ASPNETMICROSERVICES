@@ -7,6 +7,7 @@ namespace Document.API.Services
     public class DocumentService
     {
         private readonly IMongoCollection<DocumentData> _documets;
+
         public DocumentService(IDocumentDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
@@ -23,6 +24,11 @@ namespace Document.API.Services
         {
             return await _documets.Find(s => s.DocId == 3).ToListAsync();
         }
+        public async Task<List<DocumentData>> GetAllAsyncFilter(FilterDefinition<DocumentData> filter)
+        {
+            return await _documets.Find(filter).ToListAsync();
+        }
+
         public async Task<DocumentData> GetByIdAsync(string id)
         {
             return await _documets.Find(s => s.Id == id).FirstOrDefaultAsync();

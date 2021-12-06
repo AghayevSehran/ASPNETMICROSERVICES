@@ -1,6 +1,7 @@
 ﻿using Document.API.Models;
 using Document.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace Document.API.Controllers
 {
@@ -19,6 +20,17 @@ namespace Document.API.Controllers
         public async Task<ActionResult<IEnumerable<DocumentData>>> GetAll()
         {
             var documents = await _documentService.GetAllAsync();
+            return Ok(documents);
+        }
+
+        [HttpGet("/Filter")]
+        public async Task<ActionResult<IEnumerable<DocumentData>>> GetAllFiltered(DocumentData documentData)
+        {
+            var fBuilder = Builders<DocumentData>.Filter;
+            var filter = fBuilder.Eq(fp => fp.DocId, documentData.DocId) 
+                & fBuilder.Eq(fp => fp.Data.UrgencyId, documentData.Data.UrgencyId);
+
+            var documents = await _documentService.GetAllAsyncFilter(filter);
             return Ok(documents);
         }
 
