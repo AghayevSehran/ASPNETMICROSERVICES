@@ -5,6 +5,7 @@ using MongoDB.Driver;
 
 namespace Document.API.Controllers
 {
+    //https://www.mongodb.com/developer/quickstart/csharp-crud-tutorial/
     [Route("api/[controller]")]
     [ApiController]
     public class DocumentController : ControllerBase
@@ -23,7 +24,9 @@ namespace Document.API.Controllers
             return Ok(documents);
         }
 
-        [HttpGet("/Filter")]
+ 
+        [HttpGet()]
+        [Route("~/api/[controller]/Filter")]
         public async Task<ActionResult<IEnumerable<DocumentData>>> GetAllFiltered(DocumentData documentData)
         {
             var fBuilder = Builders<DocumentData>.Filter;
