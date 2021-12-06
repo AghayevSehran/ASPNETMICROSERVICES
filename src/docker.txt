@@ -3,6 +3,13 @@ docker images
 docker ps
 
 docker pull mongo
+docker run -d -p27017:27017 --name shopping-mongo mongo
+docker exec it shopping-mongo /bin/bash
+db.Products.insertMany([{ 'Name':'Asus Laptop','Category':'Computers', 'Summary':'Summary', 'Description':'Description', 'ImageFile':'ImageFile', 'Price':54.93 }, { 'Name':'HP Laptop','Category':'Computers', 'Summary':'Summary', 'Description':'Description', 'ImageFile':'ImageFile', 'Price':88.93 } ])
+
+docker start a141
+
+
 
 docker run --name some-mongo -d mongo:tag
 
@@ -16,7 +23,7 @@ docker-compose down
 
 docker ls
 
-docker exec it shopping-mongo /bin/bash
+
 
 mongo
 
