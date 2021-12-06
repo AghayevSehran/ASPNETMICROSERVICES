@@ -4,6 +4,10 @@ docker ps
 
 docker pull mongo
 
+docker run --name some-mongo -d mongo:tag
+
+docker run -d -p 27017:27017 --name shopping-mongo mongo
+
 docker-compose -f .\docker-compose.yml -f .\docker-compose.ovveride.yml up -d
 
 docker-compose down
@@ -13,6 +17,16 @@ docker-compose down
 docker ls
 
 docker exec it shopping-mongo /bin/bash
+
+mongo
+
+show dbs
+use CatalogDb  --> for create db on mongo
+db.createCollection('Products')  --> for create people collection
+
+db.Products.insertMany([{ 'Name':'Asus Laptop','Category':'Computers', 'Summary':'Summary', 'Description':'Description', 'ImageFile':'ImageFile', 'Price':54.93 }, { 'Name':'HP Laptop','Category':'Computers', 'Summary':'Summary', 'Description':'Description', 'ImageFile':'ImageFile', 'Price':88.93 } ])
+
+
 
 docker ps -aq
 
