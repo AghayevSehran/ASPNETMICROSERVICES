@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Document.API.Controllers
 {
-
+    [Route("api/[controller]")]
     [ApiController]
     public class DynamicController : ControllerBase
     {
@@ -18,9 +18,17 @@ namespace Document.API.Controllers
         {
             _documentService = documentBsonService;
         }
-    
+
         [HttpPost]
-        [Route("api/mongodb/add")]
+        [Route("~/api/[controller]/GetDocuments")]
+        public async Task<ActionResult> GetAll(int page,int size, [FromBody] JObject jsonbody)
+        {
+            var doc = BsonDocument.Parse(jsonbody.ToString());
+            var documents = await _documentService.GetDocuments(page,size, doc);
+            return Ok(documents);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] JObject jsonbody)
         {
             var doc = BsonDocument.Parse(jsonbody.ToString());
@@ -28,5 +36,50 @@ namespace Document.API.Controllers
             return Ok(doc);
 
         }
+
+        [HttpGet]
+        [Route("~/api/[controller]/GetByDocId")]
+        public async Task<ActionResult> GetByDocId(int docId)
+        {
+            var document = await _documentService.GetByDocIdAsync(docId);
+            if (document == null)
+            {
+                return NotFound();
+            }
+            return Ok(document);
+        }
+
+        [HttpGet]
+        [Route("~/api/[controller]/GetById")]
+        public async Task<ActionResult> GetById(string id)
+        {
+            var document = await _documentService.GetByIdAsync(id);
+            if (document == null)
+            {
+                return NotFound();
+            }
+            return Ok(document);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(int docId, [FromBody] JObject updatedData)
+        {
+            var queriedDocument = await _documentService.GetByDocIdAsync(docId);
+            if (queriedDocument == null)
+            {
+                return NotFound();
+            }
+            var doc = BsonDocument.Parse(updatedData.ToString());
+            var result = await _documentService.UpdateAsync(docId, doc);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int docId)
+        {         
+            var result = await _documentService.DeleteDocument(docId);
+            return Ok(result);
+        }
+
     }
 }

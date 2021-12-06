@@ -23,5 +23,54 @@ namespace Document.API.Services
             await _documets.InsertOneAsync(document);
             return document;
         }
+        private  BsonDocument CreateIdFilter(string id)
+        {
+            return new BsonDocument("_id", new BsonObjectId(new ObjectId(id)));
+        }
+        public async Task<BsonDocument> GetByIdAsync(string id)
+        {
+            return await _documets.Find(CreateIdFilter(id)).SingleAsync();
+        }
+        public async Task<BsonDocument> GetByDocIdAsync(int docId)
+        {
+            var filter = new BsonDocument { { "DocId", docId } };
+            return await _documets.Find(filter).SingleAsync();
+        }
+        public async Task<UpdateResult> CreateOrUpdateField(string id, string fieldName, string value)
+        {        
+            var update = Builders<BsonDocument>.Update.Set(fieldName, new BsonString(value));
+            return await _documets.UpdateOneAsync(CreateIdFilter(id), update);
+        }
+         
+        public async Task<ReplaceOneResult> UpdateAsync(int docId,BsonDocument document)
+        {
+            var filter = new BsonDocument { { "DocId", docId } };
+           return await _documets.ReplaceOneAsync(filter, document);
+        }
+
+        public async Task<DeleteResult> DeleteDocument(int docId)
+        {
+            var filter = new BsonDocument { { "DocId", docId } };
+            return await _documets.DeleteOneAsync(filter);
+        }
+
+        public async Task<List<BsonDocument>> GetDocuments(int page,int pagesize, BsonDocument document)
+        {          
+            var filterBuilder = Builders<BsonDocument>.Filter;
+            var sort = Builders<BsonDocument>.Sort.Descending("_id");
+            var result = await _documets.Find(document)
+                                         .Skip((page - 1)  * pagesize)
+                                         .Limit(pagesize)
+                                         .Sort(sort).ToListAsync();
+            return result;
+        }
+
+        public async Task<long> GetCollectionCount()
+        {
+            return await _documets.EstimatedDocumentCountAsync();
+        }
+
+
+
     }
 }
