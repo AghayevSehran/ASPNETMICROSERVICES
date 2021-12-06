@@ -1,4 +1,5 @@
-﻿using Document.API.Models;
+﻿using Document.API.Filters;
+using Document.API.Models;
 using Document.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -11,10 +12,12 @@ namespace Document.API.Controllers
     public class DocumentController : ControllerBase
     {
         private readonly DocumentService _documentService;
+        private readonly DoctypesFilters _doctypesFilters;
 
-        public DocumentController(DocumentService service)
+        public DocumentController(DocumentService service, DoctypesFilters doctypesFilters)
         {
             _documentService = service;
+            _doctypesFilters = doctypesFilters;
         }
 
         [HttpGet]
@@ -25,15 +28,11 @@ namespace Document.API.Controllers
         }
 
  
-        [HttpGet()]
+        [HttpPost]
         [Route("~/api/[controller]/Filter")]
-        public async Task<ActionResult<IEnumerable<DocumentData>>> GetAllFiltered(DocumentData documentData)
+        public async Task<ActionResult<IEnumerable<DocumentData>>> GetAllFiltered(DocumentFilter documentData)
         {
-            var fBuilder = Builders<DocumentData>.Filter;
-            var filter = fBuilder.Eq(fp => fp.DocId, documentData.DocId) 
-                & fBuilder.Eq(fp => fp.Data.UrgencyId, documentData.Data.UrgencyId);
-
-            var documents = await _documentService.GetAllAsyncFilter(filter);
+            var documents = await _documentService.GetAllAsyncFilter(_doctypesFilters.GenerateFilter(documentData));
             return Ok(documents);
         }
 

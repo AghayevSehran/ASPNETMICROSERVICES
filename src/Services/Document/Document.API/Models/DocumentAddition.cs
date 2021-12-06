@@ -40,9 +40,7 @@ namespace Document.API.Models
         public int? Field28 { get; set; }
         public string KeyField { get; set; }
         public int? ParentId { get; set; }
-
         public int? TopicId { get; set; }
-
         public int? OrganizationId { get; set; }
     }
 }

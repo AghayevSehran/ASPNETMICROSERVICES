@@ -3,6 +3,7 @@
     public class DocumentFilter
     {
         public int DocId { get; set; }
-        public Dictionary<string, string> Data { get; set; }
+        public int Doctype { get; set; }
+        public DocumentAdditionFilter Data { get; set; }
     }
 }

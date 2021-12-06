@@ -1,5 +1,4 @@
-﻿using Document.API.Models;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Document.API.Models
