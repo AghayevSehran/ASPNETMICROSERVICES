@@ -65,6 +65,24 @@ namespace Document.API.Services
             return result;
         }
 
+        public async Task<List<BsonDocument>> GetDocumentsProjection(int page, int pagesize, BsonDocument document, List<string> projection)
+        {
+            //var filterBuilder = Builders<BsonDocument>.Filter;
+            var sort = Builders<BsonDocument>.Sort.Descending("_id");
+
+            var fileds = Builders<BsonDocument>.Projection.Include(projection?.First());
+            foreach (var field in projection.Skip(1))
+            {
+                fileds = fileds.Include(field);
+            }
+
+            var result = await _documets.Find(document).Project(fileds)
+                                         .Skip((page - 1) * pagesize)
+                                         .Limit(pagesize)
+                                         .Sort(sort).ToListAsync();
+            return result;
+        }
+
         public async Task<long> GetCollectionCount()
         {
             return await _documets.EstimatedDocumentCountAsync();
