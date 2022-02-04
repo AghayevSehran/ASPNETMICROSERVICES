@@ -50,3 +50,20 @@ docker run -d -p 3000:3000 mongoclient/mongoclient
 
 
 
+///Reddis
+docker pull redis
+docker run -d -p 6379:6379 --name aspnetrun-redis redis
+redis-cli
+ping 
+set key value
+get key
+
+set name Arif
+get name
+
+//trouble shooting
+docker logs
+docker exec -it asppnetrun-redis /bin/bash
+
+//postgres
+docker pull postgres
