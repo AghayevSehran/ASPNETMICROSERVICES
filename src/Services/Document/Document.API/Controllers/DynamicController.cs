@@ -1,4 +1,5 @@
 ﻿
+using Document.API.Models;
 using Document.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -20,11 +21,20 @@ namespace Document.API.Controllers
         }
 
         [HttpPost]
-        [Route("~/api/[controller]/GetDocuments")]
+        [Route("~/api/[controller]/GetWithFIlter")]
         public async Task<ActionResult> GetAll(int page,int size, [FromBody] JObject jsonbody)
         {
-            var doc = BsonDocument.Parse(jsonbody.ToString());
-            var documents = await _documentService.GetDocuments(page,size, doc);
+            var docFiler = BsonDocument.Parse(jsonbody.ToString());
+            var documents = await _documentService.GetDocuments(page,size, docFiler);
+            return Ok(documents);
+        }
+
+        [HttpPost]
+        [Route("~/api/[controller]/GetWithSellectedColumns")]
+        public async Task<ActionResult> GetAllProjection(int page, int size, [FromBody] DocumentFilterProjection documentFilterProjection)
+        {
+            var docFilter = BsonDocument.Parse(documentFilterProjection.Filter.ToString());
+            var documents = await _documentService.GetDocumentsProjection(page, size, docFilter, documentFilterProjection.Project);
             return Ok(documents);
         }
 
